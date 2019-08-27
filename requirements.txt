@@ -1,0 +1,6 @@
+numpy
+glob
+soundfile
+scipy
+os
+configparser
