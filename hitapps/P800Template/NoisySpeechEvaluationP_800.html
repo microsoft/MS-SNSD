@@ -372,7 +372,7 @@ var audioChecked = function(index) {
         
         let elapsedStartTime = timeNow - startTime;
         const breakTime = 5*60*1000; // 5 minutes
-        const maxActivityTime = 3600*1000; // 1 hour
+        const maxActivityTime = 1800*1000; // 1 hour
         
         // has it past one hour, and the user had been constantly active?
         // our clips are 5-6 long seconds. 
@@ -439,10 +439,10 @@ var audioChecked = function(index) {
         if(trainingStart === null)
             sessionStorage.setItem('TrainingStartTimestap', Date.now());
                 
-        // start an interval to check for inactivity after 60 minutes
+        // start an interval to check for inactivity after 32 minutes
         setInterval(() => {
             trainingStartTimeTracker();
-        }, 60*60*1000);
+        }, 32*60*1000);
         
         //check every 30 minutes on whether the user is wearing headphones, or PC speakers
         setInterval(() => {
