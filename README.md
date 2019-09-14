@@ -10,8 +10,6 @@ Further details of this dataset can be found in our Interspeech 2019:
 
 Chandan K. A. Reddy, Ebrahim Beyrami, Jamie Pool, Ross Cutler, Sriram Srinivasan, Johannes Gehrke. "A scalable noisy speech dataset and online subjective test framework," in Interspeech, 2019
 
-Interspeech, 2019
-
 ## Prerequisites
 - Python 3.0 and above
 - pysoundfile (pip install pysoundfile)
