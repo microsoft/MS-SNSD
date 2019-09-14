@@ -1,0 +1,461 @@
+<!-- You must include this JavaScript file -->
+<script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<style type="text/css">
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+	text-align: center;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+    padding-top: 20px;
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 5px auto; 
+    border: 1px solid #888;
+    width: 600px; 
+	text-align: left;
+}
+
+.container {
+    text-align: center;
+    padding: 16px;
+}
+.animate {
+    -webkit-animation: animatezoom 0.6s;
+    animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+    from {-webkit-transform: scale(0)} 
+    to {-webkit-transform: scale(1)}
+}
+
+@keyframes animatezoom {
+    from {transform: scale(0)} 
+    to {transform: scale(1)}
+} 
+
+div#table11{
+    text-align: left;
+    padding: 0 25px;
+}
+div#table12, 
+div#id01Head {
+    padding: 25px;
+}
+div#table12>audio {
+    padding-bottom : 10px;
+}
+
+div#table12>img {
+    height : 35%;
+}
+.blueText{
+    font-weight: bold;
+    color: #0073bb;
+}
+
+.redText{
+    font-weight: bold;
+    color: #ff3232;
+}
+</style>
+<script>
+    // actions to take when the clip finishes playing. 
+    var onPlayEnded = function(index){
+        let host = document.getElementById("classifier0");
+        // Enable rating 
+        if(host)
+        host.shadowRoot.querySelector("div.category-picker div.btn-group").style.pointerEvents="all";
+    }
+    
+    // actions to take when the user rates the clip.
+    var onUserRated = function(index){
+        let audioType = sessionStorage.getItem('typeOfaudio'); 
+        var input = document.querySelector('crowd-input');
+        if(audioType && input)
+            input.value = audioType;
+          
+    }
+            
+    var showModal = function(divId){
+        let divs = $("div.modal-content > div");
+        if(divs === null)
+            return;
+            
+        for(let i=0; i< divs.length; i++){
+            if(divs[i].id && divs[i].id === divId)
+                divs[i].style.display = 'block';
+            else if(divs[i].id)
+                divs[i].style.display = 'none';
+            else
+                divs[i].style.display = 'block';
+        }
+    }
+        
+    var setupTemplate = function() {
+        // The ratings should be enabled only after listening to the clip till the end. 
+        let audioPlayer = document.getElementsByTagName("audio");
+        if(audioPlayer && audioPlayer[0])
+          audioPlayer[0].setAttribute("onended", "onPlayEnded(0)");
+
+        //crowd classifiers
+        var host = document.getElementById("classifier0");
+        
+        if(host){
+            // attach the respective rating clicking
+            host.shadowRoot.querySelector("div.category-picker div.btn-group").setAttribute("onclick", "onUserRated(0)");
+            host.shadowRoot.querySelector("div.category-picker div.btn-group").style.pointerEvents="none";
+        }
+    }
+</script>
+<script>
+    // variables
+    var timeListened = null;
+    
+    // Revert the user back to the time playing, if it is trying to seek. 
+    function onUserTriedToSeek(seekEvent) {
+    	let audioControl = seekEvent.target;
+    	let delta = audioControl.currentTime - timeListened;
+    	if (delta > 0) {
+    		audioControl.pause();
+    		//play back from where the user started seeking after rewind or without rewind
+    		audioControl.currentTime = timeListened;
+    		audioControl.play();
+    	}	
+    }
+    
+    function onListenedTimeChanged(seekEvent) {
+        // var audioControl = document.getElementsByTagName("audio")[0];
+    	let audioControl = seekEvent.target;
+    	if (!audioControl.seeking) {
+    		//if ((timeListened == null) || (audioControl.currentTime > timeListened)) {
+    	    timeListened = audioControl.currentTime;
+    	}
+    }
+    
+    function onPlayStarted(playEvent){
+       let audioControl = playEvent.target;
+       audioControl.currentTime = 0;
+    }
+    
+    function onTutorialPlayEnded(){
+       $("#btnTutorialNext").attr("disabled", false);
+    }
+</script>
+<script>
+//Training
+var allTutorialData = [
+    { }, // empty for the headphones task
+    { 
+        head1: "This is an example of a speech sample whose overall quality is ", 
+        head2: " EXCELLENT",
+        head3: "",
+        head4: "",
+        head5: "",
+        below1: "Select the category which best describes the ",
+        below2: "OVERALL QUALITY",
+        below3: " of the sample you are about to play for purpose of everyday speech communication. ",
+        below4: "",
+        below5: "",
+        gif: "Excellent", 
+        audioClip:"https://raw.githubusercontent.com/sfilipi/MS-SNSD/master/hitapps/Training_Files/Excellent.wav"
+    },
+    { 
+        head1: "This is an example of a speech sample whose ", 
+        head2: "OVERALL QUALITY ",
+        head3 : "is ",
+        head4: "BAD",
+        head5: " due to high background noise", 
+        below1: "Select the category which best describes the ",
+        below2: "OVERALL QUALITY",
+        below3: " of the sample you are about to play for purpose of everyday speech communication. ",
+        below4: "",
+        below5: "",
+        gif: "Bad", 
+        audioClip:"https://raw.githubusercontent.com/sfilipi/MS-SNSD/master/hitapps/Training_Files/BadBackground.wav"
+    },
+    { 
+        head1: "This is an example of a speech sample whose ", 
+        head2: "OVERALL QUALITY",
+        head3 : " is ",
+        head4: "BAD",
+        head5: " due to high distortion of the speaker.", 
+        below1: "Select the category which best describes the ",
+        below2: "OVERALL QUALITY",
+        below3: " of the sample you are about to play for purpose of everyday speech communication. ",
+        below4: "",
+        below5: "",
+        gif: "Bad", 
+        audioClip:"https://raw.githubusercontent.com/sfilipi/MS-SNSD/master/hitapps/Training_Files/BadSpeaker.wav"
+    }
+];
+
+var audioChecked = function(index) {
+    
+    if(index && index === allTutorialData.length){
+         let buttonDone = document.getElementById("btnTutorialDone");
+         if (buttonDone && buttonDone.disabled){
+             // enable 'Done'
+            buttonDone.disabled = false; 
+            document.querySelector("div#id01Head").innerText = "Congratulations! You finished the training. Just click 'Done' to start the experiment.";
+
+            // hide 'Next'
+            document.getElementById("btnTutorialNext").style.display="none";
+            
+            document.querySelector("div#table12").style.display = "none";
+            document.querySelector("div#table11").style.display = "none";
+            document.getElementById("tutorialProgress").style.display = "none";
+        }
+        return;
+    }
+    else if(index === 0){
+        document.getElementById("btnTutorialNext").setAttribute("onclick", "audioChecked("+(index+1)+")");
+        document.getElementById("tutorialProgress").innerHTML = (index+2)+"/"+(allTutorialData.length + 1);
+        showModal("audioInputInfo");
+        return;
+    }
+    
+    // set the visibility of the training container, rather than the audio check container.
+    showModal("tutorial");
+    
+    let tData = allTutorialData[index];
+
+    let audio  = document.querySelector("div#table12 audio");
+    let gif = document.querySelector("div#table12 img");
+    let audioNotPresent = (audio === null)
+    
+    if(audioNotPresent){
+       audio = document.createElement("AUDIO");
+       audio.addEventListener('seeking', onUserTriedToSeek);
+       audio.addEventListener('timeupdate', onListenedTimeChanged);
+       audio.addEventListener('play', onPlayStarted);
+       audio.onended = onTutorialPlayEnded;
+       audio.setAttribute("controls", "true");
+       audio.setAttribute("id", "audio1");
+       
+       gif = document.createElement("IMG");
+    }
+       
+    audio.setAttribute('src', tData.audioClip);
+
+    if(audioNotPresent){
+       document.getElementById("table12").appendChild(audio);
+       document.getElementById("table12").appendChild(gif);
+    }
+            
+    document.getElementById("table11").innerHTML = "<span>"+tData.below1+"</span><span class='blueText'>"+tData.below2+"</span><span>"+tData.below3+"</span><span class='redText'>"+tData.below4+"</span><span>"+tData.below5+"</span>";
+    document.getElementById('id01Head').innerHTML = "<span>"+tData.head1+"</span><span class='blueText'>"+tData.head2+"</span><span>"+tData.head3+"</span><span class='blueText'>"+tData.head4+"</span><span>"+tData.head5+"</span>";
+    document.querySelector('div#id01 h4').innerText = tData.head;
+    // set the handler for the next clip
+    document.getElementById("btnTutorialNext").setAttribute("onclick", "audioChecked("+(index+1)+")");
+    //disable the Next button until the sample finishes playing
+    document.getElementById("btnTutorialNext").disabled = true;
+    
+    gif.setAttribute("src", "https://raw.githubusercontent.com/sfilipi/MS-SNSD/master/hitapps/Gifs/"+tData.gif+".gif");
+    gif.removeAttribute('animation-name');
+    gif.removeAttribute('animation-duration');
+    gif.setAttribute('animation-name', "appear");
+    gif.setAttribute('animation-duration', "4s");
+    
+    document.getElementById("tutorialProgress").innerHTML = (index+2)+"/"+(allTutorialData.length + 1);
+             
+    audio.play();
+};
+</script>
+
+<crowd-form answer-format="flatten-objects">
+    <crowd-classifier 
+        id="classifier0"
+       categories="['Excellent', 'Good', 'Fair', 'Poor', 'Bad']"
+        header="Select the category which best describes the sample you are about to play for purposes of everyday speech communication. Click 'Submit' after you are done."
+        name="overall">
+        
+        <classification-target>
+            <audio controls="" style="width: 100%">
+                <source src="${audio_url}" type="audio/mpeg" />
+            </audio>
+        </classification-target>
+        <short-instructions>             
+            <p>You will be rating the quality of sound samples involving speech in background noise. </p>
+            <p>Each task will include one sentence. </p>
+            <p>For this sentence you will rate the overall quality.</p>
+            <p>Please, wear headphones and work in a quiet environment.<p>
+            <p>Note than you cannot fast forward the clip, and ratings are enabled only after listening to the audio clip.</p>
+            <p>Due to the nature of this task, after one hour of working on it, you will need to take a 10 minutes break.</p>
+        </short-instructions>
+        <full-instructions>
+            <p>You will be rating the quality of sound samples involving speech in background noise. </p>
+            <p>Each task will include the audio clip of one sentence. </p>
+            <p>For this sentence you will rate the overall quality.</p>
+            <p>Please, wear headphones and work in a quiet environment.<p>
+            <p>Note than you cannot fast forward the clip, and ratings are enabled only after listening to the audio clip.</p>
+            <p>Due to the nature of this task, after one hour of working on it, you will need to take a 10 minutes break.</p>
+        </full-instructions> 
+
+    </crowd-classifier>
+
+    <crowd-input name="audioDeviceType" label="audioDeviceType" type="text" style="display:none"></crowd-input>
+    
+</crowd-form>
+
+<div id="id01" class="modal hide fade" style="display: block;">
+    <div class="modal-content animate">
+    	<div id="tutorial" class="container">
+            <div id="id01Head"></div>
+            <div align="center">
+                <div id="table11">
+                        <p>Please use a headset for listening and adjust your volume level to your comfort during this training, and do not change later during the experiment.</p>
+                        <p>In the next pages you will be presented 3 different audio clips as examples of good and bad audio quality.</p>
+                </div>
+                <div id="table12"></div>
+            </div>
+    	</div>
+    	<div id ="audioInputInfo" class="container" style="display:none">
+    	    <h4>What audio device are you using for this task?</h4>
+    	    <radio>
+    	        <div>
+                  <input type="radio" name="audio" value="headphones">
+                  <label for="headphones">Headphones</label>
+                </div>
+                <div>
+                   <input type="radio" name="audio" value="PcSpeaker">
+                   <label for="pcSpeakers">PC Speakers</label>
+                </div>
+    	    </radio>
+    	</div>
+    	<div id ="wait10Minutes" class="container" style="display:none">
+    	    <h4>Please resume after 10 mintues</h4>
+    	    <div>
+    	        Due to the nature or this task, you need to take this short break after one hour of activity.
+    	    </div>
+    	</div>
+    	<div class="container" style="display: flex;">
+            <div id="tutorialProgress">1/5</div>
+            <div style="flex:1 1 0%; text-align: right;">
+                <button id="btnTutorialNext" onclick="audioChecked(0)">Next</button>
+                <button onclick="document.getElementById('id01').style.display='none'" type="submit" id="btnTutorialDone" disabled="">Done</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // the audio player
+    var thePlayers = document.getElementsByTagName("audio");
+    
+    for(let index = 0; index < thePlayers.length; index++){
+        thePlayers[index].addEventListener('seeking', onUserTriedToSeek);
+        thePlayers[index].addEventListener('timeupdate', onListenedTimeChanged);
+        thePlayers[index].addEventListener('play', onPlayStarted);
+    }
+    
+    // check the radio selection on the audio input type
+    $("div#id01 input").change( function(changedEvent){
+        if(changedEvent && changedEvent.target )
+            sessionStorage.setItem('typeOfaudio', changedEvent.target.value);
+    });
+
+    var trainingStartTimeTracker = function(){
+        let startTime = parseInt(sessionStorage.getItem('TrainingStartTimestap'));
+        let timeNow = Date.now();
+        
+        let isModalOnScreen = $('#id01').is(":visible");
+        
+        let noPages = parseInt(sessionStorage.getItem('NumberOfPagesCompleted'));
+        
+        let elapsedStartTime = timeNow - startTime;
+        const breakTime = 5*60*1000; // 5 minutes
+        const maxActivityTime = 1800*1000; // 1 hour
+        
+        // has it past one hour, and the user had been constantly active?
+        // our clips are 5-6 long seconds. 
+        // 1 task should take in average 30 seconds to complete before mastering, 15 seconds after mastering it
+        // intense work would be > 300 pages an hour. 
+        if(!isModalOnScreen && elapsedStartTime > (maxActivityTime + breakTime) && noPages && noPages > 300)
+         {
+            // activate the modal view that says to take a 10 mintues break
+            showModal("wait10Minutes")
+            $('#btnTutorialNext').hide();
+            $('#btnTutorialDone').attr("disabled", true);
+            $('#tutorialProgress').hide();
+            $('#id01').show();
+            
+            // set a 10 minutes tracker that will enable the Done button. 
+            setTimeout(function(){ 
+                $('#btnTutorialDone').attr("disabled", false);
+            }, breakTime);
+            
+            //reset the activity started timer
+            sessionStorage.setItem('TrainingStartTimestap', Date.now())
+            sessionStorage.setItem('NumberOfPagesCompleted', 1);
+        }   
+        
+    }
+    
+    window.onload = function (){
+        
+        // setup template
+        let iframe = document.getElementsByTagName("iframe"); 
+        iframeLoadedInterval = setInterval(function(){
+           let form = document.getElementsByTagName("crowd-form"); 
+           if(form && form[0]){
+               setupTemplate();
+               clearInterval(iframeLoadedInterval);
+            }
+        }, 50);
+        
+             
+        // Check to see if the training has run already. If so dismiss training. 
+        let trainingComplete = sessionStorage.getItem('AudioTrainingComplete');
+        var iframeLoadedInterval; 
+        
+        if(trainingComplete !== null){
+            //dismiss the modal
+            document.getElementById('id01').style.display='none';
+        }
+        else{
+            sessionStorage.setItem('AudioTrainingComplete', 'Starting');
+        }
+        
+        // Increment the page loaded counter
+        let noPages = sessionStorage.getItem('NumberOfPagesCompleted');
+        if(noPages === null)
+        {
+            sessionStorage.setItem('NumberOfPagesCompleted', 1);
+        }
+        else{
+            let noPages = parseInt(sessionStorage.getItem('NumberOfPagesCompleted'));
+            sessionStorage.setItem('NumberOfPagesCompleted', (noPages + 1));
+        }
+        
+        let trainingStart=  sessionStorage.getItem('TrainingStartTimestap');
+        if(trainingStart === null)
+            sessionStorage.setItem('TrainingStartTimestap', Date.now());
+                
+        // start an interval to check for inactivity after 32 minutes
+        setInterval(() => {
+            trainingStartTimeTracker();
+        }, 32*60*1000);
+        
+        //check every 30 minutes on whether the user is wearing headphones, or PC speakers
+        setInterval(() => {
+            let isModalOnScreen = $('#id01').is(":visible");
+            
+            if(!isModalOnScreen){
+                showModal("audioInputInfo")
+                $('#btnTutorialNext').hide();
+                $('#btnTutorialDone').attr("disabled", false);
+                $('#tutorialProgress').hide();
+                $('#id01').show(); 
+            }
+        }, 30*60*1000);
+            
+    };
+</script>
