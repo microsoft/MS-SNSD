@@ -6,9 +6,7 @@
 * This dataset will continue to grow in size as we encourage researchers and practitioners to contribute to this dataset by adding more clean speech and noise clips. 
 * This dataset will immensely help researchers and practitioners in accadamia and industry to develop better models. 
 * We also provide test set that is different from training set to evaluate the developed models.
-Further details of this dataset can be found in our Interspeech 2019:
-
-Chandan K. A. Reddy, Ebrahim Beyrami, Jamie Pool, Ross Cutler, Sriram Srinivasan, Johannes Gehrke. "A scalable noisy speech dataset and online subjective test framework," in Interspeech, 2019
+Further details of this dataset can be found in our Interspeech 2019 [paper](link to paper)
 
 ## Prerequisites
 - Python 3.0 and above
@@ -16,7 +14,7 @@ Chandan K. A. Reddy, Ebrahim Beyrami, Jamie Pool, Ross Cutler, Sriram Srinivasan
 - ($ pip install -r requirements.txt)
 
 ## Please cite us if you use this dataset
-Chandan K. A. Reddy, Ebrahim Beyrami, Jamie Pool, Ross Cutler, Sriram Srinivasan, Johannes Gehrke. "A scalable noisy speech dataset and online subjective test framework," in Interspeech, 2019
+[A scalable noisy speech dataset and online subjective test framework](link to the paper)
 
 ## MS-SNSD Dataset
 # Training and test sets
