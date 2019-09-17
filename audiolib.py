@@ -6,6 +6,7 @@ Created on Wed Jun 26 15:54:05 2019
 """
 import soundfile as sf
 import os
+import numpy as np
 
 # Function to read audio
 def audioread(path, norm = True, start=0, stop=None):
@@ -33,11 +34,13 @@ def audioread(path, norm = True, start=0, stop=None):
         return x, sr
     
 # Funtion to write audio    
-def audiowrite(data, fs, destpath, norm=True):
+def audiowrite(data, fs, destpath, norm=False):
     if norm:
         rms = (data ** 2).mean() ** 0.5
-        scalar = 10 ** (-25 / 20) / (rms)
+        scalar = 10 ** (-25 / 10) / (rms+eps)
         data = data * scalar
+        if max(abs(data))>=1:
+            data = data/max(abs(data), eps)
     
     destpath = os.path.abspath(destpath)
     destdir = os.path.dirname(destpath)
@@ -60,7 +63,8 @@ def snr_mixer(clean, noise, snr):
     noise = noise * scalarnoise
     
     # Set the noise level for a given SNR
-    noisenewlevel = noise * ((10 ** (-snr / 20))**0.5)
+    noisescalar = np.sqrt(rmsclean / (10**(snr/20)) / rmsnoise)
+    noisenewlevel = noise * noisescalar
     noisyspeech = clean + noisenewlevel
     return clean, noisenewlevel, noisyspeech
         

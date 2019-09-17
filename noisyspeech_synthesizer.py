@@ -10,21 +10,20 @@ import configparser as CP
 from audiolib import audioread, audiowrite, snr_mixer
 
 def main(cfg):
-    test=0
     snr_lower = float(cfg["snr_lower"])
     snr_upper = float(cfg["snr_upper"])
     total_snrlevels = float(cfg["total_snrlevels"])
     
-    clean_dir = os.path.join(os.path.dirname(__file__), 'CleanSpeech')
+    clean_dir = os.path.join(os.path.dirname(__file__), 'clean_train')
     if cfg["speech_dir"]!='None':
         clean_dir = cfg["speech_dir"]
-    if not os.path.exists:
+    if not os.path.exists(clean_dir):
         assert False, ("Clean speech data is required")
     
-    noise_dir = os.path.join(os.path.dirname(__file__), 'Noise')
+    noise_dir = os.path.join(os.path.dirname(__file__), 'noise_train')
     if cfg["noise_dir"]!='None':
         noise_dir = cfg["noise_dir"]
-    if not os.path.exists:
+    if not os.path.exists(noise_dir):
         assert False, ("Noise data is required")
         
     fs = float(cfg["sampling_rate"])
