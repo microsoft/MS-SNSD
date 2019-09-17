@@ -10,6 +10,7 @@ import configparser as CP
 from audiolib import audioread, audiowrite, snr_mixer
 
 def main(cfg):
+    test=0
     snr_lower = float(cfg["snr_lower"])
     snr_upper = float(cfg["snr_upper"])
     total_snrlevels = float(cfg["total_snrlevels"])
