@@ -1,1 +1,1 @@
-
+This folder contains the html code for building two Human Intelligence Task (HIT) crowdsourcing applications to allow users to rate the noisy audio clips. We implemented an absolute category rating (ACR) application according to ITU-T P.800. In addition we implemented a subjective testing method according to ITU-T P.835 which allows to rate the speech signal, background noise, and the overall quality.
