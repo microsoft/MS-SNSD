@@ -16,7 +16,7 @@ Chandan K. A. Reddy, Ebrahim Beyrami, Jamie Pool, Ross Cutler, Sriram Srinivasan
 - ($ pip install -r requirements.txt)
 
 ## Please cite us if you use this dataset
-[Chandan K. A. Reddy, Ebrahim Beyrami, Jamie Pool, Ross Cutler, Sriram Srinivasan, Johannes Gehrke. "A scalable noisy speech dataset and online subjective test framework," in Interspeech, 2019](https://www.isca-speech.org/archive/Interspeech_2019/pdfs/3087.pdf)
+[Chandan K. A. Reddy, Ebrahim Beyrami, Jamie Pool, Ross Cutler, Sriram Srinivasan, Johannes Gehrke. "Reddy, Chandan KA, Ebrahim Beyrami, Jamie Pool, Ross Cutler, Sriram Srinivasan, and Johannes Gehrke. "A Scalable Noisy Speech Dataset and Online Subjective Test Framework}}." Proc. Interspeech 2019 (2019): 1816-1820](https://www.isca-speech.org/archive/Interspeech_2019/pdfs/3087.pdf)
 
 ## MS-SNSD Dataset
 # Training and test sets
