@@ -49,10 +49,10 @@ def main(cfg):
     if cfg["noise_types_excluded"]=='None':
         noisefilenames = glob.glob(os.path.join(noise_dir, audioformat))
     else:
-        filestoexclude = cfg["noise_types_excluded"].split(',')
+        filestoexclude = [prefix.strip() for prefix in cfg["noise_types_excluded"].split(',')]
         noisefilenames = glob.glob(os.path.join(noise_dir, audioformat))
         for i in range(len(filestoexclude)):
-            noisefilenames = [fn for fn in noisefilenames if not os.path.basename(fn).startswith(filestoexclude[i].strip())]
+            noisefilenames = [fn for fn in noisefilenames if not os.path.basename(fn).startswith(filestoexclude[i])]
     
     filecounter = 0
     num_samples = 0
