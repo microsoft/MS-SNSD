@@ -8,7 +8,7 @@
 * We also provide test set that is different from training set to evaluate the developed models.
 * We provide html code for building two Human Intelligence Task (HIT) crowdsourcing applications to allow users to rate the noisy audio clips. We implemented an absolute category rating (ACR) application according to ITU-T P.800. In addition we implemented a subjective testing method according to ITU-T P.835 which allows to rate the speech signal, background noise, and the overall quality.
 Further details of this dataset can be found in our Interspeech 2019 paper:
-Chandan K. A. Reddy, Ebrahim Beyrami, Jamie Pool, Ross Cutler, Sriram Srinivasan, Johannes Gehrke. "A scalable noisy speech dataset and online subjective test framework," in Interspeech, 2019
+Chandan K. A. Reddy, Ebrahim Beyrami, Jamie Pool, Ross Cutler, Sriram Srinivasan, Johannes Gehrke. "A scalable noisy speech dataset and online subjective test framework," in Interspeech, 2019. [Link](https://www.isca-speech.org/archive/Interspeech_2019/pdfs/3087.pdf)
 
 ## Prerequisites
 - Python 3.0 and above
@@ -16,13 +16,15 @@ Chandan K. A. Reddy, Ebrahim Beyrami, Jamie Pool, Ross Cutler, Sriram Srinivasan
 - ($ pip install -r requirements.txt)
 
 ## Please cite us if you use this dataset
-[@article{reddy2019scalable,
+```
+@article{reddy2019scalable,
   title={A Scalable Noisy Speech Dataset and Online Subjective Test Framework$\}$$\}$},
   author={Reddy, Chandan KA and Beyrami, Ebrahim and Pool, Jamie and Cutler, Ross and Srinivasan, Sriram and Gehrke, Johannes},
   journal={Proc. Interspeech 2019},
   pages={1816--1820},
   year={2019}
-}](https://www.isca-speech.org/archive/Interspeech_2019/pdfs/3087.pdf)
+}
+```
 
 ## MS-SNSD Dataset
 # Training and test sets
