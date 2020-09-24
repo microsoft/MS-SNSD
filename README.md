@@ -18,7 +18,7 @@ Chandan K. A. Reddy, Ebrahim Beyrami, Jamie Pool, Ross Cutler, Sriram Srinivasan
 ## Please cite us if you use this dataset
 ```
 @article{reddy2019scalable,
-  title={A Scalable Noisy Speech Dataset and Online Subjective Test Framework$\}$$\}$},
+  title={A Scalable Noisy Speech Dataset and Online Subjective Test Framework},
   author={Reddy, Chandan KA and Beyrami, Ebrahim and Pool, Jamie and Cutler, Ross and Srinivasan, Sriram and Gehrke, Johannes},
   journal={Proc. Interspeech 2019},
   pages={1816--1820},
