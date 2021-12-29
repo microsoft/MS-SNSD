@@ -65,7 +65,7 @@ def snr_mixer(clean, noise, snr):
     rmsnoise = (noise**2).mean()**0.5
     
     # Set the noise level for a given SNR
-    noisescalar = np.sqrt(rmsclean / (10**(snr/20)) / rmsnoise)
+    noisescalar = rmsclean / (10**(snr/20)) / rmsnoise
     noisenewlevel = noise * noisescalar
     noisyspeech = clean + noisenewlevel
     return clean, noisenewlevel, noisyspeech

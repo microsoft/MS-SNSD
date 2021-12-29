@@ -1,6 +1,5 @@
 numpy
-glob
+glob2
 soundfile
 scipy
-os
 configparser
