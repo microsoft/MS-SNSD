@@ -19,7 +19,7 @@ def main(cfg):
         clean_dir = cfg["speech_dir"]
     if not os.path.exists(clean_dir):
         assert False, ("Clean speech data is required")
-    
+
     noise_dir = os.path.join(os.path.dirname(__file__), 'noise_train')
     if cfg["noise_dir"]!='None':
         noise_dir = cfg["noise_dir"]
@@ -59,7 +59,7 @@ def main(cfg):
     
     while num_samples < total_samples:
         idx_s = np.random.randint(0, np.size(cleanfilenames))
-        clean, fs = audioread(cleanfilenames[idx_s])
+        clean, fs = audioread(cleanfilenames[idx_s], sr=fs)
         
         if len(clean)>audio_length:
             clean = clean
@@ -70,12 +70,12 @@ def main(cfg):
                 idx_s = idx_s + 1
                 if idx_s >= np.size(cleanfilenames)-1:
                     idx_s = np.random.randint(0, np.size(cleanfilenames)) 
-                newclean, fs = audioread(cleanfilenames[idx_s])
+                newclean, fs = audioread(cleanfilenames[idx_s], sr=fs)
                 cleanconcat = np.append(clean, np.zeros(int(fs*silence_length)))
                 clean = np.append(cleanconcat, newclean)
     
         idx_n = np.random.randint(0, np.size(noisefilenames))
-        noise, fs = audioread(noisefilenames[idx_n])
+        noise, fs = audioread(noisefilenames[idx_n], sr=fs)
         
         if len(noise)>=len(clean):
             noise = noise[0:len(clean)]
@@ -86,7 +86,7 @@ def main(cfg):
                 idx_n = idx_n + 1
                 if idx_n >= np.size(noisefilenames)-1:
                     idx_n = np.random.randint(0, np.size(noisefilenames))
-                newnoise, fs = audioread(noisefilenames[idx_n])
+                newnoise, fs = audioread(noisefilenames[idx_n], sr=fs)
                 noiseconcat = np.append(noise, np.zeros(int(fs*silence_length)))
                 noise = np.append(noiseconcat, newnoise)
         noise = noise[0:len(clean)]
