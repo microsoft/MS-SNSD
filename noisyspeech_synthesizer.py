@@ -12,7 +12,7 @@ from audiolib import audioread, audiowrite, snr_mixer
 def main(cfg):
     snr_lower = float(cfg["snr_lower"])
     snr_upper = float(cfg["snr_upper"])
-    total_snrlevels = float(cfg["total_snrlevels"])
+    total_snrlevels = int(cfg["total_snrlevels"])
     
     clean_dir = os.path.join(os.path.dirname(__file__), 'clean_train')
     if cfg["speech_dir"]!='None':
@@ -49,7 +49,7 @@ def main(cfg):
     if cfg["noise_types_excluded"]=='None':
         noisefilenames = glob.glob(os.path.join(noise_dir, audioformat))
     else:
-        filestoexclude = cfg["noise_types_excluded"].split(',')
+        filestoexclude = [prefix.strip() for prefix in cfg["noise_types_excluded"].split(',')]
         noisefilenames = glob.glob(os.path.join(noise_dir, audioformat))
         for i in range(len(filestoexclude)):
             noisefilenames = [fn for fn in noisefilenames if not os.path.basename(fn).startswith(filestoexclude[i])]
