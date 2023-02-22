@@ -7,14 +7,15 @@ Created on Wed Jun 26 15:54:05 2019
 import soundfile as sf
 import os
 import numpy as np
+import librosa
 
 # Function to read audio
-def audioread(path, norm = True, start=0, stop=None):
+def audioread(path, norm = True, sr=16000):
     path = os.path.abspath(path)
     if not os.path.exists(path):
         raise ValueError("[{}] does not exist!".format(path))
     try:
-        x, sr = sf.read(path, start=start, stop=stop)
+        x, sr = librosa.load(path, sr=sr)
     except RuntimeError:  # fix for sph pcm-embedded shortened v2
         print('WARNING: Audio type not supported')
 
@@ -47,8 +48,8 @@ def audiowrite(data, fs, destpath, norm=False):
     
     if not os.path.exists(destdir):
         os.makedirs(destdir)
-    
-    sf.write(destpath, data, fs)
+
+    sf.write(destpath, data, int(fs))
     return
 
 # Function to mix clean speech and noise at various SNR levels
